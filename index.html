@@ -9,6 +9,7 @@
     <script>
         // Function to check for the `principal` in the URL
         const checkPrincipalInURL = () => {
+            // Extract the principal from the URL query parameters
             const searchParams = new URLSearchParams(window.location.search);
             const principal = searchParams.get("principal");
 
@@ -18,21 +19,32 @@
             }
         };
 
-        // Initial URL check
+        // 1. Initial URL check
         checkPrincipalInURL();
 
-        // Set up a listener to check for URL changes
+        // 2. Set up a listener to check for URL changes (to handle back/forward navigation)
         window.addEventListener('popstate', checkPrincipalInURL); // Handles back/forward navigation
 
-        // If necessary, you can also set an interval to periodically check for the principal
-        setInterval(checkPrincipalInURL, 1000); // Check every second
+        // 3. Use an interval to periodically check for the principal in the URL
+        const checkInterval = setInterval(() => {
+            checkPrincipalInURL();
+        }, 1000); // Check every second
 
-        // If principal is not found, redirect to ICP login page
-        const searchParams = new URLSearchParams(window.location.search);
-        const principal = searchParams.get("principal");
-        if (!principal) {
-            window.location.href = "https://identity.ic0.app"; // Redirect to ICP login page if necessary
-        }
+        // 4. Stop checking after 10 seconds if no principal found (optional)
+        setTimeout(() => {
+            clearInterval(checkInterval);
+        }, 10000); // Stop checking after 10 seconds
+
+        // 5. If principal is not found, redirect to ICP login page
+        setTimeout(() => {
+            const searchParams = new URLSearchParams(window.location.search);
+            const principal = searchParams.get("principal");
+
+            if (!principal) {
+                // Redirect to ICP login page if principal is missing
+                window.location.href = "https://identity.ic0.app"; 
+            }
+        }, 5000); // Redirect to ICP login page after 5 seconds if principal is not found
     </script>
 </body>
 </html>
