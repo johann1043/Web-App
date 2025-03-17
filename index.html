@@ -7,16 +7,30 @@
 </head>
 <body>
     <script>
-        // Extract the query parameters from the URL
+        // Function to check for the `principal` in the URL
+        const checkPrincipalInURL = () => {
+            const searchParams = new URLSearchParams(window.location.search);
+            const principal = searchParams.get("principal");
+
+            if (principal) {
+                // Redirect to the app using the deep link
+                window.location.href = `flipper://auth?principal=${encodeURIComponent(principal)}`;
+            }
+        };
+
+        // Initial URL check
+        checkPrincipalInURL();
+
+        // Set up a listener to check for URL changes
+        window.addEventListener('popstate', checkPrincipalInURL); // Handles back/forward navigation
+
+        // If necessary, you can also set an interval to periodically check for the principal
+        setInterval(checkPrincipalInURL, 1000); // Check every second
+
+        // If principal is not found, redirect to ICP login page
         const searchParams = new URLSearchParams(window.location.search);
         const principal = searchParams.get("principal");
-
-        // If the principal is present in the URL, redirect to the app via deep link
-        if (principal) {
-            // Redirect back to the React Native app using the deep link (flipper://)
-            window.location.href = `flipper://auth?principal=${encodeURIComponent(principal)}`;
-        } else {
-            // If no principal is found, redirect to ICP login page
+        if (!principal) {
             window.location.href = "https://identity.ic0.app"; // Redirect to ICP login page if necessary
         }
     </script>
