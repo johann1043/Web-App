@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ICP Auth Redirect</title>
+</head>
+<body>
+    <script>
+        const searchParams = new URLSearchParams(window.location.search);
+        const principal = searchParams.get("principal");
+
+        if (principal) {
+            // Redirect back to the React Native app using deep link
+            window.location.href = `myapp://auth?principal=${encodeURIComponent(principal)}`;
+        } else {
+            // If no principal, redirect to ICP Auth page
+            window.location.href = "https://identity.ic0.app";
+        }
+    </script>
+</body>
+</html>
