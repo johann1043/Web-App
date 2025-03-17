@@ -7,16 +7,24 @@
 </head>
 <body>
     <script>
-        // Check if the principal is present in the URL query
+        // Log the current URL for debugging
+        console.log("Current URL:", window.location.href);
+
+        // Extract the query parameters
         const searchParams = new URLSearchParams(window.location.search);
         const principal = searchParams.get("principal");
 
-        // If the principal is found, redirect back to the app using deep link
+        // Log the principal to check if it's present in the URL
+        console.log("Principal:", principal);
+
+        // Check if principal exists and perform the redirect
         if (principal) {
-            // Redirect to the React Native app using the 'flipper://' deep link with the principal data
+            console.log("Redirecting back to app with principal:", principal);
+            // Redirect to the React Native app using the deep link (flipper://)
             window.location.href = `flipper://auth?principal=${encodeURIComponent(principal)}`;
         } else {
-            // If no principal, redirect to ICP login page
+            // If no principal is found, log an error and possibly retry or go to ICP login
+            console.log("Error: No principal found in the URL. Redirecting to ICP login page.");
             window.location.href = "https://identity.ic0.app";
         }
     </script>
